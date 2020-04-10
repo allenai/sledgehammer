@@ -166,10 +166,6 @@ class Adam_optimizer(Optimizer):
                 break
 
 
-            if i % 100 == 0:
-                print(i, loss.item())
-
-
 class _ECELoss(nn.Module):
     """
     Calculates the Expected Calibration Error of a model.

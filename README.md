@@ -17,7 +17,7 @@ To fine-tune a pretrained model, run the `train_model.py` command. The script sa
 python scripts/train_model.py
 -t bert_type: One of _bert-base-uncased_, _bert-large-uncased_, _bert-base-cased_, _bert-large-cased_, _bert-base-multilingual-uncased_, _bert-base-multilingual-cased_, _bert-base-chinese_.
 -l layer_indices: '_'-separated list indices of layers to add classifiers to (each between [0-(num_layers-1)])
--w work_dir: working directory to store output experiments in
+-w work_dir: working directory to store output experiments in. Inside it, the following folders will be created:  <bert_type>/<dataset>/experiment_<layer_indices>_<experiment_index>/
 -i: an NLI experiment (if false, a text classification experiment)
 -d dataset_name_: dataset name to work with
 -n <n_runs = 1>: number of experiments to run
@@ -38,7 +38,8 @@ python scripts/train_model.py
 ```
 
 ## Temperature Calibration
-To calibrate a trained model, run the `run_calibration.py` command. The script gets as input a saved model and the development set, and prints the temperatures of all classifiers ('_' separated):
+To calibrate a trained model, run the `run_calibration.py` command. The script gets as input a saved model and the development set, and prints the temperatures of all classifiers ('_' separated). It then runs adam (LBFGS optimizer also available with the `-o` flag). 
+The code builds on a modified version of https://github.com/HMJiangGatech/gat_graphsage_conf/blob/master/temperature_scaling.py
 
 ```
 python scripts/run_calibration.py
@@ -48,11 +49,13 @@ python scripts/run_calibration.py
 
 ## Evaluation
 
-To evaluate our model, run the `run_evaluation.py` script. The script gets as input the output of the calibration model (a '_'-separated list of temperatures, one per classification layer):
+To evaluate our model, run the `run_evaluation.py` script. The script gets as input the output of the calibration model (the last line of the output of the `run_calibration.py` script): a '_'-separated list of temperatures, one per classification layer. 
+It also gets a confidence threshold (in the range [0-1]) which controls the speed/accuracy tradeoff. Lower values favor speed, while higher values favor accuracy. The model's output is saved in a file called <output_file>_<confidence_threshold>. The model's speed (seconds) is shown on the scripts' output.
 
 ```
 python scripts/run_evaluation.py 
 -t <calibration_temperatures (one per classification layer, '_' separated)>
+-c <confidence_threshold value>
 -v <dev set file> 
 -o <output file>
 -m <saved model file (.th file)>
