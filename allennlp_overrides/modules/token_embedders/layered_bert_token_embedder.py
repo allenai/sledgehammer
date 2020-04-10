@@ -17,7 +17,7 @@ from pytorch_pretrained_bert.modeling import BertModel
 
 from allennlp.modules.scalar_mix import ScalarMix
 from allennlp.nn import util
-from myallennlp.pytorch_pretrained_bert.modeling import LayeredBertModel
+from allennlp_overrides.pytorch_pretrained_bert.modeling import LayeredBertModel
 
 logger = logging.getLogger(__name__)
 

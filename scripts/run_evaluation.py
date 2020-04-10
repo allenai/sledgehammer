@@ -12,8 +12,8 @@ def main():
     
     serialization_dir = "/".join(args.model_file.split("/")[:-1])
 
-    cmd = "python myallennlp/commands/evaluate.py {} {} ".format(serialization_dir, args.dev_file)+\
-        "--include-package myallennlp --cuda-device {} ".format(args.cuda_device)+\
+    cmd = "python allennlp_overrides/commands/evaluate.py {} {} ".format(serialization_dir, args.dev_file)+\
+        "--include-package allennlp_overrides --cuda-device {} ".format(args.cuda_device)+\
         " -o "+'"{'+" iterator: "+'{'+"batch_size: 1"+'}'+", model: "+'{'+\
             "temperature_threshold: 1, scaling_temperature: '{}'".format(args.temperatures)+\
             '}}"'+" --weights-file {} -t \"{}\" --output-file {};".format(

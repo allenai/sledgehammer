@@ -7,5 +7,5 @@ and produce datasets in the formats required by specific models.
 """
 
 # pylint: disable=line-too-long
-from myallennlp.models.multiloss_bert_for_classification import MultilossBertForClassification
-from myallennlp.models.multiloss_bert import MultilossBert
+from allennlp_overrides.pytorch_pretrained_bert.modeling import LayeredBertModel
+from allennlp_overrides.pytorch_pretrained_bert.tokenization import BertTokenizer

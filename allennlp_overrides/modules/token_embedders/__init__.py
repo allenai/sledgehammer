@@ -7,4 +7,4 @@ and produce datasets in the formats required by specific models.
 """
 
 # pylint: disable=line-too-long
-from myallennlp.modules.token_embedders.layered_bert_token_embedder import LayeredPretrainedBertModel
+from allennlp_overrides.modules.token_embedders.layered_bert_token_embedder import LayeredPretrainedBertModel

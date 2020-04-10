@@ -1,2 +1,0 @@
-from myallennlp.data.token_indexers.wordpiece_indexer import NoDebugPretrainedBertIndexer
-

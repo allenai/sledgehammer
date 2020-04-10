@@ -4,9 +4,9 @@ import torch
 
 from allennlp.data.vocabulary import Vocabulary
 from allennlp.models.model import Model
-from myallennlp.modules.token_embedders.layered_bert_token_embedder import LayeredPretrainedBertModel
-from myallennlp.training.metrics.count_n_layers import CountNLayers
 from allennlp.nn.initializers import InitializerApplicator
+from allennlp_overrides.modules.token_embedders.layered_bert_token_embedder import LayeredPretrainedBertModel
+from allennlp_overrides.training.metrics.count_n_layers import CountNLayers
 
 
 @Model.register("multiloss_bert")

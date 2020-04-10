@@ -65,7 +65,7 @@ def main():
             seed = str(random.randint(0,100000))
             local_dir = args.work_dir+args.bert_type+"/"+dataset+"/experiment_{}_{}/".format(layer_indices, i)
             local_extra_args = copy.copy(extra_args)
-            allennlp_cmd = "allennlp train {} --serialization-dir {} --include-package myallennlp -f".format(training_config_file, local_dir)
+            allennlp_cmd = "allennlp train {} --serialization-dir {} --include-package allennlp_overrides -f".format(training_config_file, local_dir)
             if slurm is None:
                 os.environ["SEED"] = seed
                 os.environ["PYTORCH_SEED"] = seed

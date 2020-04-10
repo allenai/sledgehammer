@@ -9,11 +9,11 @@ from allennlp.data.iterators import DataIterator
 from allennlp.common.tqdm import Tqdm
 from allennlp.common.params import Params
 from allennlp.data.vocabulary import Vocabulary
-from myallennlp.data.token_indexers import *
-from myallennlp.modules.token_embedders import *
-from myallennlp.pytorch_pretrained_bert import *
-from myallennlp.models.multiloss_bert_for_classification import MultilossBertForClassification
-from myallennlp.dataset_readers.classification_dataset_reader import ClassificationDatasetReader
+from allennlp_overrides.data.token_indexers import *
+from allennlp_overrides.modules.token_embedders import *
+from allennlp_overrides.pytorch_pretrained_bert import *
+from allennlp_overrides.models.multiloss_bert_for_classification import MultilossBertForClassification
+from allennlp_overrides.dataset_readers.classification_dataset_reader import ClassificationDatasetReader
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 def main():

@@ -7,9 +7,9 @@ import copy
 
 from allennlp.data.vocabulary import Vocabulary
 from allennlp.models.model import Model
-from myallennlp.modules.token_embedders.layered_bert_token_embedder import LayeredPretrainedBertModel
 from allennlp.nn.initializers import InitializerApplicator
 from allennlp.training.metrics import CategoricalAccuracy
+from allennlp_overrides.modules.token_embedders.layered_bert_token_embedder import LayeredPretrainedBertModel
 from .multiloss_bert import MultilossBert
 
 
