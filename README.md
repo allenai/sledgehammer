@@ -8,7 +8,7 @@ The code is implemented in python3.6 using AllenNLP. To run it, please install t
 
 ```pip install -r requirements.txt```
 
-All commands below are found in the `scripts` directory. Run each with `-h` to see additional options.
+All commands below are found in the `scripts` directory. Each is run on GPU (with device 0 by default). A different GPU can be configured in all scripts with the `-u` flag, with `-1` running on CPU. Run each script with `-h` to see additional options.
 
 ## Fine-Tuning a model for a downstream task
 To fine-tune a pretrained model, run the `train_model.py` command. The script samples a learning rate between `[2e-5, 3e-5, 5e-5]` and a random seed in the range (0,100000). It can be used to run multiple random search experiments over these parameters (see `-n` flag below).
@@ -44,7 +44,6 @@ To calibrate a trained model, run the `run_calibration.py` command. The script g
 python scripts/run_calibration.py
 -m <saved model file (.th file)>
 -v <development set file>
--u <CUDA device (or -1 for CPU)>
 ```
 
 ## Evaluation
@@ -54,7 +53,6 @@ To evaluate our model, run the `run_evaluation.py` script. The script gets as in
 ```
 python scripts/run_evaluation.py 
 -t <calibration_temperatures (one per classification layer, '_' separated)>
--u <CUDA device (or -1 for CPU)> 
 -v <dev set file> 
 -o <output file>
 -m <saved model file (.th file)>

@@ -47,7 +47,7 @@ def main():
             os.environ["TEST_PATH"] = base_path+dataset+"/test"
             os.environ["LAYER_INDICES"] = layer_indices
             # @todo change me back to 0
-            os.environ["CUDA_DEVICE"] = "-1"
+            os.environ["CUDA_DEVICE"] = str(args.cuda_device)
             os.environ["SCALING_TEMPERATURE"] = "_".join(["1" for i in range(len(layer_indices.split("_")))])
             os.environ["BATCH_SIZE"] = str(args.batch_size)
             os.environ["MAX_PIECES"] = str(args.max_pieces)
@@ -125,9 +125,10 @@ def arg_parser():
     p.add_argument("-l", "--layer_indices", help="Indices of layers to train classifiers for", type=str, default="23")
     p.add_argument("-d", "--dataset", help="Dataset to work with", required=True)
     p.add_argument("-i", "--nli", help="Is this an NLI experiment? (if not, it's text_cat)", action='store_true')
-    p.add_argument("-u", "--slurm", help="Run jobs on SLURM using this server", type=str)
+    p.add_argument("-r", "--slurm", help="Run jobs on SLURM using this server", type=str)
     p.add_argument('-w', '--work_dir', help="Working directory. Should contain a directory for the bert_type, which contains another directory for the dataset", type=str, default="/net/nfs.corp/allennlp/roys/work/sledgehammer/models/")
     p.add_argument('--data_dir', help="Dataset directory. Should contain 'text_cat' and/or 'nli' folders, containing a directory for the dataset, which contains three files: train, dev and test",  type=str, default=os.environ["HOME"]+"/resources/")
+    p.add_argument("-u", "--cuda_device", help="CUDA device (or -1 for CPU)", type=int, default=0)
 
 
     return  ArgumentParser(description=__doc__,
