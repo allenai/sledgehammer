@@ -69,11 +69,8 @@ def set_temperature(model, n_layers, optimizer, data_iterator = None, cuda_devic
         labels_list = [x for _,x in sorted(zip(ids_list, labels_list), key=lambda t: t[0])]
         labels = cuda_func(torch.cat(labels_list))
 
-        print()
         logits_list = [x for _,x in sorted(zip(ids_list, logits_list), key=lambda t: t[0])]
         ids_list = sorted(ids_list)
-        for i, lo, la in zip(ids_list, logits_list, labels):
-            print({"id": i[0], "logits": [x.cpu().numpy().tolist()[0] for x in lo], "label": la.item()})
     
         all_logits = [cuda_func(torch.cat([x[layer_index] for x in logits_list])) for layer_index in range(n_layers)]
         torch.save([all_logits[0], labels], 'b')
