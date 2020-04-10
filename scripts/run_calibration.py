@@ -14,16 +14,15 @@ from myallennlp.modules.token_embedders import *
 from myallennlp.pytorch_pretrained_bert import *
 from myallennlp.models.multiloss_bert_for_classification import MultilossBertForClassification
 from myallennlp.dataset_readers.sst_dataset_reader import SSTDatasetReader
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
-def main(args):
-    temp_value = "1.,1.,1.,1."
-    optimizer = "adam"
-    if len(args) < 3:
-        print("Usage: {} <model file> <dataset file> <optimizer = adam (or lbfgs)>".format(args[0], temp_value))
-        return -1
-    elif len(args) > 3:
-        optimizer = args[4]
+def main():
+    parser = arg_parser()
 
+    args = parser.parse_args()
+    
+    temp_value = "1._1._1._1."
+    optimizer = args.optimizer
     n_epochs = 10000
 
     if optimizer == 'adam':
@@ -34,59 +33,74 @@ def main(args):
         print("Illegal optimizer {}, must be one of (adam, lbfgs)")
         return -2
 
-    temp_value = [float(x) for x in temp_value.split(",")]
-    n_layers = len(temp_value)
+    temp_value_list = [float(x) for x in temp_value.split("_")]
+    n_layers = len(temp_value_list)
 
-    d = args[1]
+    model_file = args.model_file
+    serialization_dir = "/".join(args.model_file.split("/")[:-1])
+    evaluation_data_path = args.dev_file
 
-    if d[-1] != '/':
-        d += '/'
-
-    evaluation_data_path = args[2]
-    epoch = args[3]
-
-    cuda_device=0
+    cuda_device=args.cuda_device
     
     # output file
-    if epoch == '-1':
-        model = evaluation_data_path
-        # Load vocabulary from file
-        # If the config specifies a vocabulary subclass, we need to use it.
-        generator_tqdm = None
-    else:
-        overrides = '{ iterator: {batch_size: 1}, model: {temperature_threshold: 1}}'
-        archive = load_archive(d, cuda_device, overrides, d+'model_state_epoch_'+epoch+'.th')
-        config = archive.config
+    overrides = "{ iterator: {batch_size: 1}, model: {temperature_threshold: 1, scaling_temperature: '"+temp_value+"'}}"
+    print(overrides)
+    archive = load_archive(serialization_dir, cuda_device, overrides, model_file)
+    config = archive.config
 
-        model = archive.model
+    model = archive.model
+
+    if cuda_device >= 0:
         model = model.cuda()
-        model._scaling_temperatures = temp_value
-        model.eval()
-        vocab = model.vocab
+    model._scaling_temperatures = temp_value_list
+    model.eval()
+    vocab = model.vocab
 
-        validation_dataset_reader_params = config.pop("validation_dataset_reader", None)
-        if validation_dataset_reader_params is not None:
-            dataset_reader = DatasetReader.from_params(validation_dataset_reader_params)
-        else:
-            dataset_reader = DatasetReader.from_params(config.pop("dataset_reader"))
+    validation_dataset_reader_params = config.pop("validation_dataset_reader", None)
+    if validation_dataset_reader_params is not None:
+        dataset_reader = DatasetReader.from_params(validation_dataset_reader_params)
+    else:
+        dataset_reader = DatasetReader.from_params(config.pop("dataset_reader"))
+
+    instances = dataset_reader.read(evaluation_data_path)
+
+    iterator_params = config.pop("iterator")
+
+    data_iterator = DataIterator.from_params(iterator_params)
+
+    data_iterator.index_with(vocab)
+
+    iterator = data_iterator(instances, num_epochs=1, shuffle=False)
     
-        instances = dataset_reader.read(evaluation_data_path)
+    generator_tqdm = Tqdm.tqdm(iterator, total=data_iterator.get_num_batches(instances))
 
-        iterator_params = config.pop("iterator")
+    temp = set_temperature(model, n_layers, optimizer, generator_tqdm, cuda_device)
 
-        data_iterator = DataIterator.from_params(iterator_params)
-
-        data_iterator.index_with(vocab)
-
-        iterator = data_iterator(instances, num_epochs=1, shuffle=False)
-        
-        generator_tqdm = Tqdm.tqdm(iterator, total=data_iterator.get_num_batches(instances))
-
-        temp = set_temperature(model, n_layers, optimizer, generator_tqdm, cuda_device)
-
-    print(temp)
+    print("\n\n######################################\n")
+    print("#  Finished computing temperatures.  #\n")
+    print("######################################\n")
+    print("Values are: {}".format("_".join([str(x) for x in temp])))
 
     return 0
 
+
+def arg_parser():
+    """Extracting CLI arguments"""
+    p = ArgumentParser(add_help=False)
+
+    p.add_argument("-u", "--cuda_device", help="CUDA device (or -1 for CPU)", type=int, default=0)
+    p.add_argument('-m', '--model_file', help="Model file",  type=str, required=True)
+    p.add_argument('-v', '--dev_file', help="Development set file",  type=str, required=True)
+    p.add_argument('-o', '--optimizer', help="Optimizer (adam or lbfgs)",  type=str, default="adam")
+
+
+    return  ArgumentParser(description=__doc__,
+                            formatter_class=ArgumentDefaultsHelpFormatter,
+                            parents=[p])
+
+
 if __name__ == '__main__':
-    sys.exit(main(sys.argv))
+    sys.exit(main())
+
+
+
