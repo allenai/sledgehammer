@@ -2,6 +2,7 @@
 The ``evaluate`` subcommand can be used to
 evaluate a trained model against a dataset
 and report any metrics calculated by the model.
+This version supports reading confidence thresholds.
 
 .. code-block:: bash
 

@@ -3,7 +3,7 @@
   "pytorch_seed": std.parseInt(std.extVar("PYTORCH_SEED")),
   "numpy_seed": std.parseInt(std.extVar("NUMPY_SEED")),
   "dataset_reader": {
-    "type": "sst_dataset_reader",
+    "type": "classification_dataset_reader",
      "token_indexers": {
       "bert": {
           "type": "nodebug-bert-pretrained",

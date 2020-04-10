@@ -38,7 +38,6 @@ logger = logging.getLogger(__name__)
 
 PRETRAINED_MODEL_ARCHIVE_MAP = {
     'bert-base-uncased': "https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-uncased.tar.gz",
-    'distilbert-base-uncased': "https://s3.amazonaws.com/models.huggingface.co/bert/distilbert-base-uncased-pytorch_model.bin",
     'bert-large-uncased': "https://s3.amazonaws.com/models.huggingface.co/bert/bert-large-uncased.tar.gz",
     'bert-base-cased': "https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-cased.tar.gz",
     'bert-large-cased': "https://s3.amazonaws.com/models.huggingface.co/bert/bert-large-cased.tar.gz",
@@ -396,6 +395,9 @@ class BertLayer(nn.Module):
 
 
 class LayeredBertEncoder(nn.Module):
+    """
+    A BERT encoder that can encode using a subset of the layers instead of all of them.
+    """
     def __init__(self, config):
         super(LayeredBertEncoder, self).__init__()
         layer = BertLayer(config)
@@ -405,7 +407,6 @@ class LayeredBertEncoder(nn.Module):
         all_encoder_layers = []
 
         num_predicted_hidden_layers = len(self.layer) if (num_predicted_hidden_layers == -1) else (num_predicted_hidden_layers + 1)
-#        print("nphl calc=",num_predicted_hidden_layers)  
 
         for layer_module in self.layer[start_index:num_predicted_hidden_layers]:
             hidden_states = layer_module(hidden_states, attention_mask)
@@ -663,7 +664,7 @@ class BertPreTrainedModel(nn.Module):
 
 
 class LayeredBertModel(BertPreTrainedModel):
-    """BERT model ("Bidirectional Embedding Representations from a Transformer").
+    """A BERT model ("Bidirectional Embedding Representations from a Transformer") that supports classifiers on multiple layers.
 
     Params:
         config: a BertConfig class instance with the configuration to build a new model
@@ -743,13 +744,13 @@ class LayeredBertModel(BertPreTrainedModel):
         extended_attention_mask = extended_attention_mask.to(dtype=next(self.parameters()).dtype) # fp16 compatibility
         extended_attention_mask = (1.0 - extended_attention_mask) * -10000.0
 
+        # Run encoder on layers [start_index-num_predicted_hidden_layers]
         encoded_layers = self.encoder(embedding_output,
                                       extended_attention_mask,
                                       output_all_encoded_layers=True,
                                       num_predicted_hidden_layers=num_predicted_hidden_layers,
                                       start_index=start_index)
 
-#        print('nphl', num_predicted_hidden_layers, 'lel', len(encoded_layers))
         if not output_all_encoded_layers:
             encoded_layers = encoded_layers[layer_index-start_index]
 

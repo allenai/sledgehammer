@@ -102,6 +102,7 @@ class MultilossBert(Model):
                                                 start_index=start_index, previous_layer=previous_layer
                                                 )
 
+        # pooled in BERT classification task is the CLS tag (i.e., the first element)
         pooled = self._dropout(pooled)
 
         if previous_pooled is not None:

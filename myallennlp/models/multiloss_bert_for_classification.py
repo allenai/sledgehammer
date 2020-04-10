@@ -214,6 +214,7 @@ class MultilossBertForClassification(MultilossBert):
 
         weighted_pooled = torch.einsum("a,abc->bc", (self._sum_weights[layer_index], pooled))
 
+        # An option to add logits of earlier classifiers as features to the current classifier
         if self._add_previous_layer_logits:
             weighted_pooled = torch.cat([weighted_pooled] + logit_list, dim=1)
 

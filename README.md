@@ -15,7 +15,7 @@ To fine-tune a pretrained model, run the `train_model.py` command. The script sa
 
 ```
 python scripts/train_model.py
--t bert_type: One of _bert-base-uncased_, _bert-large-uncased_, _bert-base-cased_, _bert-large-cased_, _bert-base-multilingual-uncased_, _bert-base-multilingual-cased_, _bert-base-chinese_.
+-t bert_type: One of bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese.
 -l layer_indices: '_'-separated list indices of layers to add classifiers to (each between [0-(num_layers-1)])
 -w work_dir: working directory to store output experiments in. Inside it, the following folders will be created:  <bert_type>/<dataset>/experiment_<layer_indices>_<experiment_index>/
 -i: an NLI experiment (if false, a text classification experiment)
@@ -49,7 +49,7 @@ python scripts/run_calibration.py
 
 ## Evaluation
 
-To evaluate our model, run the `run_evaluation.py` script. The script gets as input the output of the calibration model (the last line of the output of the `run_calibration.py` script): a '_'-separated list of temperatures, one per classification layer. 
+To evaluate our model, run the `run_evaluation.py` script. The script gets as input the output of the calibration model (the last line of the output of the `run_calibration.py` script): a `'_'`-separated list of temperatures, one per classification layer. 
 It also gets a confidence threshold (in the range [0-1]) which controls the speed/accuracy tradeoff. Lower values favor speed, while higher values favor accuracy. The model's output is saved in a file called <output_file>_<confidence_threshold>. The model's speed (seconds) is shown on the scripts' output.
 
 ```

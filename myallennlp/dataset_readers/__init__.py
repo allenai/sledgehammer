@@ -7,8 +7,7 @@ and produce datasets in the formats required by specific models.
 """
 
 # pylint: disable=line-too-long
-from myallennlp.dataset_readers.sst_dataset_reader import SSTDatasetReader
-from myallennlp.dataset_readers.sst_dataset_reader_oracle import SSTDatasetOracleReader
+from myallennlp.dataset_readers.classification_dataset_reader import ClassificationDatasetReader
+from myallennlp.dataset_readers.classification_dataset_reader_oracle import ClassificationDatasetOracleReader
 from myallennlp.dataset_readers.nli_dataset_reader import NLIDatasetReader
 from myallennlp.dataset_readers.nli_dataset_reader_oracle import NLIDatasetOracleReader
-from myallennlp.dataset_readers.jigsaw_dataset_reader import JigsawDatasetReader

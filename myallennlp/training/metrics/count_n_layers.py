@@ -10,7 +10,7 @@ from allennlp.training.metrics.metric import Metric
 @Metric.register("count_n_layers")
 class CountNLayers(Metric):
     """
-    Compute statistics of number of layers
+    Compute statistics of number of layers: how many times each layer (i.e., the corresponding classifier) was selected
     """
     def __init__(self, layer_indices: List[int]) -> None:
         self._layer_counts = [0 for i in layer_indices]
