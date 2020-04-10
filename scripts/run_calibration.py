@@ -44,7 +44,6 @@ def main():
     
     # output file
     overrides = "{ iterator: {batch_size: 1}, model: {temperature_threshold: 1, scaling_temperature: '"+temp_value+"'}}"
-    print(overrides)
     archive = load_archive(serialization_dir, cuda_device, overrides, model_file)
     config = archive.config
 
