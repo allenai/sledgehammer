@@ -39,7 +39,7 @@ python scripts/train_model.py
 
 ## Temperature Calibration
 To calibrate a trained model, run the `run_calibration.py` command. The script gets as input a saved model and the development set, and prints the temperatures of all classifiers ('_' separated). It then runs adam (LBFGS optimizer also available with the `-o` flag). 
-The code builds on a modified version of https://github.com/HMJiangGatech/gat_graphsage_conf/blob/master/temperature_scaling.py
+The code builds on a modified version of https://github.com/gpleiss/temperature_scaling/blob/master/temperature_scaling.py
 
 ```
 python scripts/run_calibration.py
