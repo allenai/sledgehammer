@@ -63,7 +63,7 @@ def main():
             lr = str(lrs[random.randint(0, len(lrs))-1])
             dr = str(random.uniform(dropout[0], dropout[1]))
             seed = str(random.randint(0,100000))
-            local_dir = args.work_dir+args.bert_type+"/"+dataset+"/multiloss_{}_{}/".format(layer_indices, i)
+            local_dir = args.work_dir+args.bert_type+"/"+dataset+"/experiment_{}_{}/".format(layer_indices, i)
             local_extra_args = copy.copy(extra_args)
             allennlp_cmd = "allennlp train {} --serialization-dir {} --include-package myallennlp -f".format(training_config_file, local_dir)
             if slurm is None:
@@ -126,8 +126,8 @@ def arg_parser():
     p.add_argument("-d", "--dataset", help="Dataset to work with", required=True)
     p.add_argument("-i", "--nli", help="Is this an NLI experiment? (if not, it's text_cat)", action='store_true')
     p.add_argument("-r", "--slurm", help="Run jobs on SLURM using this server", type=str)
-    p.add_argument('-w', '--work_dir', help="Working directory. Should contain a directory for the bert_type, which contains another directory for the dataset", type=str, default="/net/nfs.corp/allennlp/roys/work/sledgehammer/models/")
-    p.add_argument('--data_dir', help="Dataset directory. Should contain 'text_cat' and/or 'nli' folders, containing a directory for the dataset, which contains three files: train, dev and test",  type=str, default=os.environ["HOME"]+"/resources/")
+    p.add_argument('-w', '--work_dir', help="Working directory. Should contain a directory for the bert_type, which contains another directory for the dataset", type=str, default="")
+    p.add_argument('--data_dir', help="Dataset directory. Should contain 'text_cat' and/or 'nli' folders, containing a directory for the dataset, which contains three files: train, dev and test",  type=str, required=True)
     p.add_argument("-u", "--cuda_device", help="CUDA device (or -1 for CPU)", type=int, default=0)
 
 
