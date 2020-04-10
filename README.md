@@ -1,5 +1,5 @@
 # Sledgehammer
-An improved  method for contextual representation fine-tuning which, during  inference, allows for an early (and fast) "exit" from neural network calculations for  simple  instances  and  late  (and  accurate) exit  for  hard  instances. Based on ["The Right Tool for the Job: Matching Model and Instance Complexities"](https://arxiv.org/abs/???) by Roy Schwartz, Gabriel Stanovsky, Swabha Swayamdipta, Jesse Dodge and Noah A. Smith, ACL 2020.
+An improved  method for contextual representation fine-tuning which, during  inference, allows for an early (and fast) "exit" from neural network calculations for  simple  instances  and  late  (and  accurate) exit  for  hard  instances. Based on "The Right Tool for the Job: Matching Model and Instance Complexities" by Roy Schwartz, Gabriel Stanovsky, Swabha Swayamdipta, Jesse Dodge and Noah A. Smith, ACL 2020.
 
 
 ## Setup
