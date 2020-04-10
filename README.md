@@ -76,4 +76,4 @@ If you make use if this code, please cite the following paper:
 
 ## Contact
 
-For questions, comments or feedback, please email roys@allenai.org
+For inquiries, please file an [issue](https://github.com/allenai/sledgehammer/issues) or email roys@allenai.org.
