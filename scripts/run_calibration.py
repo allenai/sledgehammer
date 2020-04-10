@@ -13,7 +13,7 @@ from myallennlp.data.token_indexers import *
 from myallennlp.modules.token_embedders import *
 from myallennlp.pytorch_pretrained_bert import *
 from myallennlp.models.multiloss_bert_for_classification import MultilossBertForClassification
-from myallennlp.dataset_readers.sst_dataset_reader import SSTDatasetReader
+from myallennlp.dataset_readers.classification_dataset_reader import ClassificationDatasetReader
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 def main():
