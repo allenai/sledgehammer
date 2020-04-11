@@ -32,7 +32,7 @@ E.g.,
 python scripts/train_model.py \
 -t bert-base-uncased \
 -l 0_3_5_11 \
---data_dir_ ~/resources/ \
+--data_dir ~/resources/ \
 -d imdb \
 -w <working directory>
 ```
