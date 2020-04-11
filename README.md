@@ -42,9 +42,10 @@ Each file in the data directory (under data_dir/{text_cat,nli}/{train,dev,test})
 label	text
 
 E.g.,
+```
 1	The movie was great
 0	I didn't like the book
-
+```
 ## Temperature Calibration
 To calibrate a trained model, run the `run_calibration.py` command. The script gets as input a saved model and the development set, and prints the temperatures of all classifiers ('_' separated). It then runs adam (LBFGS optimizer also available with the `-o` flag). 
 The code builds on a modified version of https://github.com/gpleiss/temperature_scaling/blob/master/temperature_scaling.py
@@ -61,11 +62,11 @@ To evaluate our model, run the `run_evaluation.py` script. The script gets as in
 It also gets a confidence threshold (in the range [0-1]) which controls the speed/accuracy tradeoff. Lower values favor speed, while higher values favor accuracy. The model's output is saved in a file called <output_file>_<confidence_threshold>. The model's speed (seconds) is shown on the scripts' output.
 
 ```
-python scripts/run_evaluation.py 
--t <calibration_temperatures (one per classification layer, '_' separated)>
--c <confidence_threshold value>
--v <dev set file> 
--o <output file>
+python scripts/run_evaluation.py  \
+-t <calibration_temperatures (one per classification layer, '_' separated)> \
+-c <confidence_threshold value> \
+-v <dev set file> \
+-o <output file> \
 -m <saved model file (.th file)>
 ```
 
