@@ -29,12 +29,12 @@ data_dir/nli/<dataset name>/{train,dev,test}
 E.g., 
 
 ```
-python scripts/train_model.py
--t bert-base-uncased
--l 0_3_5_11
--w ~/resources/
--d imdb
---data_dir <working directory>
+python scripts/train_model.py \
+-t bert-base-uncased \
+-l 0_3_5_11 \
+--data_dir_ ~/resources/ \
+-d imdb \
+-w <working directory>
 ```
 
 ## Temperature Calibration
