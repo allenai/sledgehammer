@@ -37,13 +37,21 @@ python scripts/train_model.py \
 -w <working directory>
 ```
 
+### Dataset structure
+Each file in the data directory (under data_dir/{text_cat,nli}/{train,dev,test}) should contain one line per instance in the following format:
+label	text
+
+E.g.,
+1	The movie was great
+0	I didn't like the book
+
 ## Temperature Calibration
 To calibrate a trained model, run the `run_calibration.py` command. The script gets as input a saved model and the development set, and prints the temperatures of all classifiers ('_' separated). It then runs adam (LBFGS optimizer also available with the `-o` flag). 
 The code builds on a modified version of https://github.com/gpleiss/temperature_scaling/blob/master/temperature_scaling.py
 
 ```
-python scripts/run_calibration.py
--m <saved model file (.th file)>
+python scripts/run_calibration.py \
+-m <saved model file (.th file)> \
 -v <development set file>
 ```
 
@@ -60,6 +68,9 @@ python scripts/run_evaluation.py
 -o <output file>
 -m <saved model file (.th file)>
 ```
+
+## Trouble shooting
+If training crashes due to CUDA memory errors, try reducing the batch size (`-b` flag).
 
 ## References
 If you make use if this code, please cite the following paper:
