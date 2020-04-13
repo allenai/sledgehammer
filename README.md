@@ -32,20 +32,29 @@ E.g.,
 python scripts/train_model.py \
 -t bert-base-uncased \
 -l 0_3_5_11 \
---data_dir ~/resources/ \
+--data_dir data_dir \
 -d imdb \
 -w <working directory>
 ```
 
 ### Dataset structure
-Each file in the data directory (under data_dir/{text_cat,nli}/{train,dev,test}) should contain one line per instance in the following format:
+This package currently supports text classification and NLI datasets.
+To use it, please place your data in some directory (e.g., `data_dir`). 
+This directory should contain two sub-directories: `text_cat` (for text classification datasets) and `nli` (for NLI datasets).
+Inside each directory, put a directory for each dataset you want to experiment with (e.g., `text_cat/imdb`, `nli/snli`).
+Inside the dataset directories, place three files: `train`, `dev`, and `test`.
+Each of these files should contain one line per instance in the following format:
+
+```
 label	text
+```
 
 E.g.,
 ```
 1	The movie was great
 0	I didn't like the book
 ```
+
 ## Temperature Calibration
 To calibrate a trained model, run the `run_calibration.py` command. The script gets as input a saved model and the development set, and prints the temperatures of all classifiers ('_' separated). It then runs adam (LBFGS optimizer also available with the `-o` flag). 
 The code builds on a modified version of https://github.com/gpleiss/temperature_scaling/blob/master/temperature_scaling.py
@@ -56,14 +65,31 @@ python scripts/run_calibration.py \
 -v <development set file>
 ```
 
+
+For instance, here as an example output of the script:
+...
+
+
+```
+######################################
+
+#  Finished computing temperatures.  #
+
+######################################
+
+Values are: 0.5930193662643433_1.159342885017395_1.1623098850250244_1.2985113859176636
+```
+
+The resulting values (`0.5930193662643433_1.159342885017395_1.1623098850250244_1.2985113859176636` in this example) should be copied and fed to the evaluation script (see below).
+
 ## Evaluation
 
-To evaluate our model, run the `run_evaluation.py` script. The script gets as input the output of the calibration model (the last line of the output of the `run_calibration.py` script): a `'_'`-separated list of temperatures, one per classification layer. 
+To evaluate our model, run the `run_evaluation.py` script. The script gets as input the output of the calibration model (the last line of the output of the `run_calibration.py` script, see above): a `'_'`-separated list of temperatures, one per classification layer. 
 It also gets a confidence threshold (in the range [0-1]) which controls the speed/accuracy tradeoff. Lower values favor speed, while higher values favor accuracy. The model's output is saved in a file called <output_file>_<confidence_threshold>. The model's speed (seconds) is shown on the scripts' output.
 
 ```
 python scripts/run_evaluation.py  \
--t <calibration_temperatures (one per classification layer, '_' separated)> \
+-t <output from the calibration script: one per classification layer, '_' separated> \
 -c <confidence_threshold value> \
 -v <dev set file> \
 -o <output file> \
@@ -89,3 +115,4 @@ If you make use if this code, please cite the following paper:
 ## Contact
 
 For inquiries, please file an [issue](https://github.com/allenai/sledgehammer/issues) or email roys@allenai.org.
+
