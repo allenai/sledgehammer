@@ -85,7 +85,7 @@ The resulting values (`0.5930193662643433_1.159342885017395_1.1623098850250244_1
 ## Evaluation
 
 To evaluate our model, run the `run_evaluation.py` script. The script gets as input the output of the calibration model (the last line of the output of the `run_calibration.py` script, see above): a `'_'`-separated list of temperatures, one per classification layer. 
-It also gets a confidence threshold (in the range [0-1]) which controls the speed/accuracy tradeoff. Lower values favor speed, while higher values favor accuracy. The model's output is saved in a file called <output_file>_<confidence_threshold>. The model's speed (seconds) is shown on the scripts' output.
+It also gets a confidence threshold (in the range [0-1]) which controls the speed/accuracy tradeoff. Lower values favor speed, while higher values favor accuracy. The model's output is saved in a file called <output_file>_<confidence_threshold>. The model's speed (seconds) is shown in the script's output.
 
 ```
 python scripts/run_evaluation.py  \
