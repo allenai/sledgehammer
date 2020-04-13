@@ -66,11 +66,11 @@ python scripts/run_calibration.py \
 ```
 
 
-For instance, here as an example output of the script:
-...
+For instance, here as an example of the last few lines of a successful output of the script:
 
 
 ```
+...
 ######################################
 
 #  Finished computing temperatures.  #
