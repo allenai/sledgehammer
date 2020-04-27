@@ -1,0 +1,1 @@
+This package contains two classes: `MultilossBert`, which is a base class for fine-tuning BERT with multiple output layers, and the `MultilossBertForClassification` class which extends it for text classification tasks (including NLI). To extend this model for other tasks (e.g., QA), consider extending the `MultilossBert` class with another class.
