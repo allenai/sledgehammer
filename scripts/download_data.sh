@@ -67,43 +67,11 @@ function download_allennlp {
         curl -Lo $json_file https://s3-us-west-2.amazonaws.com/allennlp/datasets/$remote_name/${i}.jsonl
         cat $json_file  | jq -r '[.label, .text] | @tsv' | awk -F $'\t' '{print $1-1"\t"$2}' | sed 's/\\\\/\\/g' > $out_dir/text_cat/$name/$i
     done
-
 }
 
-#download_nli https://nlp.stanford.edu/projects/snli/snli_1.0.zip snli snli dev test
+download_nli https://nlp.stanford.edu/projects/snli/snli_1.0.zip snli snli dev test
 
 download_nli https://www.nyu.edu/projects/bowman/multinli/multinli_1.0.zip mnli multinli dev_matched dev_mismatched
-
-# IMDB
-wget http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz -O $tmp_dir/aclImdb_v1.tar.gz
-tar -xzvf $tmp_dir/aclImdb_v1.tar.gz -C $tmp_dir
-mkdir -p $tmp_dir/imdb/
-
-ofile=$out_dir/text_cat/imdb/test
-echo "" > $ofile
-for i in $tmp_dir/aclImdb/test/pos/*.txt; do
-    cat $i | sed 's/\<br \/\>//g' | sed 's/\<\.\.\>//g' | awk '{print 1"\t"$0}' >> $ofile
-done
-for i in $tmp_dir/aclImdb/test/neg/*.txt; do
-    cat $i | sed 's/\<br \/\>//g' | sed 's/\<\.\.\>//g' | awk '{print 0"\t"$0}' >> $ofile
-done
-
-ofile=$tmp_dir/imdb/train_all
-echo "" > $ofile
-for i in $tmp_dir/aclImdb/train/pos/*.txt; do
-    cat $i | sed 's/\<br \/\>//g' | sed 's/\<\.\.\>//g' | awk '{print 1"\t"$0}' >> $ofile
-done
-for i in $tmp_dir/aclImdb/train/neg/*.txt; do
-    cat $i | sed 's/\<br \/\>//g' | sed 's/\<\.\.\>//g' | awk '{print 0"\t"$0}' >> $ofile
-done
-
-# train/dev split
-cat $ofile | sort -R > $tmp_dir/imdb/train_all_random
-ofile=$tmp_dir/imdb/train_all_random
-
-cat $ofile | h -n 5000 > $out_dir/text_cat/imdb/dev
-cat $ofile | tail -n 20000 > $out_dir/text_cat/imdb/train
-
 
 #### AG news and IMDB
 download_allennlp ag ag-news 
