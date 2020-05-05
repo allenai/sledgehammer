@@ -63,10 +63,11 @@ label	  text
 
 E.g.,
 ```
-1	  The movie was great
+1   The movie was great
 0   I didn't like the book
 ```
 
+Note that some of the datasets are large, so downloading them may take a few minutes.
 To experiment with additional datasets, download them and put them in the corresponding directories as explained above.
 
 ## Temperature Calibration
