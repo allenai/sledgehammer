@@ -37,23 +37,37 @@ python scripts/train_model.py \
 -w <working directory>
 ```
 
-### Dataset structure
-This package currently supports text classification and NLI datasets.
-To use it, please place your data in some directory (e.g., `data_dir`). 
-This directory should contain two sub-directories: `text_cat` (for text classification datasets) and `nli` (for NLI datasets).
-Inside each directory, put a directory for each dataset you want to experiment with (e.g., `text_cat/imdb`, `nli/snli`).
-Inside the dataset directories, place three files: `train`, `dev`, and `test`.
-Each of these files should contain one line per instance in the following format:
+### Datasets
+This package currently only supports text classification and NLI datasets.
+To download the datasets experimented with in our paper (AG news, IMDB, SST, SNLI and MultiNLI), 
+run the following script:
 
 ```
-label	text
+scripts/download_data.sh <output directory>
+```
+
+E.g., 
+```
+scripts/download_data.sh ./resources/
+```
+
+This script will download the 5 datasets and put them in `<output directort>`.
+This directory will contain two sub-directories: `text_cat` (for text classification datasets) and `nli` (for NLI datasets).
+Inside each directory, a directory will be created for each dataset (e.g., `text_cat/imdb`, `nli/snli`).
+Inside the dataset directories, there will be three files: `train`, `dev`, and `test`.
+Each of these files would contain one line per instance in the following format:
+
+```
+label	  text
 ```
 
 E.g.,
 ```
-1	The movie was great
-0	I didn't like the book
+1	  The movie was great
+0   I didn't like the book
 ```
+
+To experiment with additional datasets, download them and put them in the corresponding directories as explained above.
 
 ## Temperature Calibration
 To calibrate a trained model, run the `run_calibration.py` command. The script gets as input a saved model and the development set, and prints the temperatures of all classifiers ('_' separated). It then runs adam (LBFGS optimizer also available with the `-o` flag). 
