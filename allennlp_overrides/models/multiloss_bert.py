@@ -75,6 +75,8 @@ class MultilossBert(Model):
 
         max_layer = max(self._layer_indices)
 
+        assert max_layer < len(self.bert_model.encoder.layer), "Recieved layer {} (in {}) which is not smaller than the number of layers in BERT model ({})".format(max_layer, layer_indices, len(self.bert_model.encoder.layer))
+        
         # Removing all unused parameters
         self.bert_model.encoder.layer = self.bert_model.encoder.layer[:max_layer+1]
 
