@@ -67,6 +67,14 @@ E.g.,
 0   I didn't like the book
 ```
 
+For NLI, please follow the same format, and separate premise and hypothesis with another tab.
+
+E.g., 
+```
+1   This is a premise	This is a hypothesis
+```
+
+
 Note that some of the datasets are large, so downloading them may take a few minutes.
 To experiment with additional datasets, download them and put them in the corresponding directories as explained above.
 
