@@ -6,7 +6,6 @@ from overrides import overrides
 from allennlp.data.tokenizers import Token
 import numpy as np
 from allennlp.data import Instance
-import pandas as pd
 import torch
 
 label_cols = ['accuracy']
